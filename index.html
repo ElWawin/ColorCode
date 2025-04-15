@@ -1,58 +1,96 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Selector de Colores HTML</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selector de Colores Profesional</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #f7f9fc, #e3e8ef);
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f7f9fc, #e4ecf3);
       color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeInBody 1.2s ease;
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      animation: fadeIn 1s ease-out;
+      margin-top: 30px;
+      font-size: 32px;
+      animation: slideDown 1s ease-out;
     }
 
-    #buscador {
-      display: block;
-      margin: 0 auto 30px auto;
-      padding: 12px;
-      font-size: 16px;
-      width: 90%;
-      max-width: 400px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-    }
-
-    #buscador:focus {
-      border-color: #888;
-      outline: none;
-    }
-
-    .tabla-colores {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-      gap: 20px;
-      animation: slideUp 1s ease;
-    }
-
-    @keyframes fadeIn {
+    @keyframes slideDown {
       from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes slideUp {
+    .contenedor {
+      width: 95%;
+      max-width: 800px;
+      margin-top: 20px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .selector {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    input[type="color"] {
+      width: 80px;
+      height: 80px;
+      border: none;
+      outline: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    input[type="color"]:hover {
+      transform: scale(1.1);
+    }
+
+    .color-elegido {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      background: #f0f0f0;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+    }
+
+    .tabla-colores {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+      animation: fadeInTabla 1s ease;
+    }
+
+    @keyframes fadeInTabla {
       from { opacity: 0; transform: translateY(50px); }
       to { opacity: 1; transform: translateY(0); }
     }
@@ -61,96 +99,100 @@
       background: #fff;
       border-radius: 10px;
       padding: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
     }
 
     .color-box:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      transform: scale(1.07);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
     }
 
-    .color-preview {
+    .preview {
       width: 100%;
-      height: 80px;
+      height: 60px;
       border-radius: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    .color-name {
+    .nombre {
       font-weight: bold;
-      margin-bottom: 5px;
+      font-size: 14px;
     }
 
-    .color-code {
+    .codigo {
       font-family: monospace;
-      font-size: 14px;
-      color: #555;
+      font-size: 13px;
+      color: #666;
     }
 
-    .footer {
-      text-align: center;
-      margin-top: 40px;
+    footer {
+      margin: 40px auto 20px;
       font-size: 14px;
-      color: #777;
+      color: #888;
     }
   </style>
 </head>
 <body>
 
-  <h1>Selector Profesional de Colores</h1>
-  <input type="text" id="buscador" placeholder="Buscar color por nombre o código...">
-  <div class="tabla-colores" id="tabla"></div>
+  <h1>Selector de Colores</h1>
 
-  <div class="footer">
-    Clic en cualquier color para copiar el código al portapapeles
+  <div class="contenedor">
+    <div class="selector">
+      <input type="color" id="colorPicker">
+    </div>
+    <div class="color-elegido">
+      Color seleccionado: <span id="codigoColor">#000000</span>  
+    </div>
+
+    <div class="tabla-colores" id="tablaColores"></div>
   </div>
+
+  <footer>
+    Clic en un color para copiar su código
+  </footer>
 
   <script>
     const colores = [
-      { nombre: "Aqua", codigo: "#00FFFF" }, { nombre: "Black", codigo: "#000000" },
-      { nombre: "Blue", codigo: "#0000FF" }, { nombre: "Fuchsia", codigo: "#FF00FF" },
-      { nombre: "Gray", codigo: "#808080" }, { nombre: "Green", codigo: "#008000" },
-      { nombre: "Lime", codigo: "#00FF00" }, { nombre: "Maroon", codigo: "#800000" },
-      { nombre: "Navy", codigo: "#000080" }, { nombre: "Olive", codigo: "#808000" },
-      { nombre: "Orange", codigo: "#FFA500" }, { nombre: "Purple", codigo: "#800080" },
-      { nombre: "Red", codigo: "#FF0000" }, { nombre: "Silver", codigo: "#C0C0C0" },
-      { nombre: "Teal", codigo: "#008080" }, { nombre: "White", codigo: "#FFFFFF" },
-      { nombre: "Yellow", codigo: "#FFFF00" }, { nombre: "Crimson", codigo: "#DC143C" },
-      { nombre: "Gold", codigo: "#FFD700" }, { nombre: "Indigo", codigo: "#4B0082" },
-      { nombre: "Turquoise", codigo: "#40E0D0" }, { nombre: "Salmon", codigo: "#FA8072" },
-      { nombre: "Plum", codigo: "#DDA0DD" }, { nombre: "Khaki", codigo: "#F0E68C" },
-      { nombre: "SkyBlue", codigo: "#87CEEB" }, { nombre: "Tomato", codigo: "#FF6347" },
+      { nombre: "Negro", codigo: "#000000" }, { nombre: "Blanco", codigo: "#FFFFFF" },
+      { nombre: "Rojo", codigo: "#FF0000" }, { nombre: "Verde", codigo: "#00FF00" },
+      { nombre: "Azul", codigo: "#0000FF" }, { nombre: "Amarillo", codigo: "#FFFF00" },
+      { nombre: "Cian", codigo: "#00FFFF" }, { nombre: "Magenta", codigo: "#FF00FF" },
+      { nombre: "Naranja", codigo: "#FFA500" }, { nombre: "Violeta", codigo: "#800080" },
+      { nombre: "Gris", codigo: "#808080" }, { nombre: "Marrón", codigo: "#A52A2A" },
+      { nombre: "Turquesa", codigo: "#40E0D0" }, { nombre: "Coral", codigo: "#FF7F50" },
+      { nombre: "Esmeralda", codigo: "#50C878" }, { nombre: "Lima", codigo: "#32CD32" },
+      { nombre: "Rosa", codigo: "#FFC0CB" }, { nombre: "Oro", codigo: "#FFD700" },
+      { nombre: "Celeste", codigo: "#87CEEB" }, { nombre: "Chocolate", codigo: "#D2691E" },
     ];
 
-    const tabla = document.getElementById('tabla');
-    const buscador = document.getElementById('buscador');
+    const tabla = document.getElementById("tablaColores");
+    const picker = document.getElementById("colorPicker");
+    const codigoColor = document.getElementById("codigoColor");
 
-    function mostrarColores(filtro = '') {
-      tabla.innerHTML = '';
-      colores.filter(c =>
-        c.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-        c.codigo.toLowerCase().includes(filtro.toLowerCase())
-      ).forEach(color => {
-        const div = document.createElement('div');
-        div.className = 'color-box';
-        div.innerHTML = `
-          <div class="color-preview" style="background:${color.codigo}"></div>
-          <div class="color-name">${color.nombre}</div>
-          <div class="color-code">${color.codigo}</div>
-        `;
-        div.onclick = () => {
-          navigator.clipboard.writeText(color.codigo);
-          alert(`¡Copiado: ${color.codigo}!`);
-        };
-        tabla.appendChild(div);
-      });
-    }
+    picker.addEventListener("input", () => {
+      const valor = picker.value.toUpperCase();
+      codigoColor.textContent = valor;
+      navigator.clipboard.writeText(valor);
+    });
 
-    buscador.addEventListener('input', () => mostrarColores(buscador.value));
-    mostrarColores();
+    colores.forEach(c => {
+      const div = document.createElement("div");
+      div.className = "color-box";
+      div.innerHTML = `
+        <div class="preview" style="background:${c.codigo}"></div>
+        <div class="nombre">${c.nombre}</div>
+        <div class="codigo">${c.codigo}</div>
+      `;
+      div.onclick = () => {
+        navigator.clipboard.writeText(c.codigo);
+        alert(`¡Copiado: ${c.codigo}!`);
+      };
+      tabla.appendChild(div);
+    });
   </script>
+
 </body>
 </html>
