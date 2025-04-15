@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colores Bonitos</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #fdfdfd, #f0f0f0);
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    #buscador {
+      display: block;
+      margin: 0 auto 30px auto;
+      padding: 12px;
+      font-size: 16px;
+      width: 90%;
+      max-width: 400px;
+      border: 2px solid #aaa;
+      border-radius: 6px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .color-card {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .color-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .preview {
+      height: 80px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      transition: background 0.3s ease;
+    }
+    .name {
+      font-weight: bold;
+    }
+    .code {
+      font-family: monospace;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Tabla de Colores</h1>
+  <input type="text" id="buscador" placeholder="Buscar por nombre o código..." />
+  <div class="grid" id="contenedor"></div>
+
+  <script>
+    const colores = [
+      { nombre: 'Rojo', codigo: '#FF0000' },
+      { nombre: 'Verde', codigo: '#00FF00' },
+      { nombre: 'Azul', codigo: '#0000FF' },
+      { nombre: 'Amarillo', codigo: '#FFFF00' },
+      { nombre: 'Cian', codigo: '#00FFFF' },
+      { nombre: 'Magenta', codigo: '#FF00FF' },
+      { nombre: 'Gris', codigo: '#808080' },
+      { nombre: 'Naranja', codigo: '#FFA500' },
+      { nombre: 'Violeta', codigo: '#8A2BE2' },
+      { nombre: 'Turquesa', codigo: '#40E0D0' },
+      { nombre: 'Esmeralda', codigo: '#50C878' },
+      { nombre: 'Coral', codigo: '#FF7F50' }
+    ];
+
+    const contenedor = document.getElementById("contenedor");
+    const buscador = document.getElementById("buscador");
+
+    function mostrarColores(filtro = "") {
+      contenedor.innerHTML = "";
+      colores
+        .filter(c =>
+          c.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+          c.codigo.toLowerCase().includes(filtro.toLowerCase())
+        )
+        .forEach(c => {
+          const div = document.createElement("div");
+          div.className = "color-card";
+          div.innerHTML = `
+            <div class="preview" style="background: ${c.codigo}"></div>
+            <div class="name">${c.nombre}</div>
+            <div class="code">${c.codigo}</div>
+          `;
+          div.onclick = () => {
+            navigator.clipboard.writeText(c.codigo);
+            alert(`Copiado: ${c.codigo}`);
+          };
+          contenedor.appendChild(div);
+        });
+    }
+
+    buscador.addEventListener("input", () => mostrarColores(buscador.value));
+    mostrarColores();
+  </script>
+</body>
+</html>
