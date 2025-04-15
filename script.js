@@ -1,147 +1,126 @@
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fff;
-  color: #333;
-  transition: background 0.4s ease, color 0.4s ease;
+const colorPicker = document.getElementById("colorPicker");
+const hexCode = document.getElementById("hexCode");
+const colorsTable = document.getElementById("colorsTable");
+const favorites = document.getElementById("favorites");
+const recentColors = document.getElementById("recentColors");
+
+const baseColors = [
+  "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
+  "#00FFFF", "#FFFFFF", "#000000", "#808080", "#800000",
+  "#FFA500", "#A52A2A", "#800080", "#008080", "#008000",
+  "#ADD8E6", "#90EE90", "#D3D3D3", "#FFC0CB", "#FFD700"
+];
+
+function toggleMenu() {
+  document.getElementById("sidebar").classList.toggle("open");
 }
 
-main {
-  margin-left: 240px;
-  padding: 20px;
+function loadColors() {
+  colorsTable.innerHTML = "";
+  baseColors.forEach(color => {
+    const div = createColorBox(color);
+    colorsTable.appendChild(div);
+  });
 }
 
-h1, h2 {
-  text-align: center;
+function createColorBox(color) {
+  const div = document.createElement("div");
+  div.className = "color-box";
+  div.style.backgroundColor = color;
+  div.onclick = () => selectColor(color);
+  return div;
 }
 
-.grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  animation: fadeIn 0.5s ease;
+function selectColor(color) {
+  colorPicker.value = color;
+  hexCode.textContent = color.toUpperCase();
+  saveRecent(color);
 }
 
-.color-box {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+function copyColor() {
+  navigator.clipboard.writeText(colorPicker.value);
+  alert("¡Color copiado al portapapeles!");
 }
 
-.color-box:hover {
-  transform: scale(1.1);
+function addFavorite() {
+  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+  if (!favs.includes(colorPicker.value)) {
+    favs.push(colorPicker.value);
+    localStorage.setItem("favorites", JSON.stringify(favs));
+    showFavorites();
+  }
 }
 
-input[type="color"] {
-  height: 40px;
-  border: none;
-  margin: 10px;
+function showFavorites() {
+  favorites.innerHTML = "";
+  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+  favs.forEach(color => {
+    const div = createColorBox(color);
+    favorites.appendChild(div);
+  });
 }
 
-button {
-  padding: 8px 12px;
-  margin: 10px;
-  border: none;
-  background-color: #333;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
+function exportFavorites() {
+  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+  const blob = new Blob([favs.join("\n")], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.download = "favoritos.txt";
+  a.href = URL.createObjectURL(blob);
+  a.click();
 }
 
-button:hover {
-  background-color: #555;
+function toggleDarkMode() {
+  document.body.classList.toggle("dark-mode");
 }
 
-#hexCode {
-  font-weight: bold;
-  font-size: 1.1em;
+function saveRecent(color) {
+  let recents = JSON.parse(localStorage.getItem("recent") || "[]");
+  recents.unshift(color);
+  recents = [...new Set(recents)].slice(0, 10); // últimos 10 sin repetir
+  localStorage.setItem("recent", JSON.stringify(recents));
+  showRecents();
 }
 
-input[type="text"] {
-  padding: 5px 10px;
-  width: 200px;
-  margin: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+function showRecents() {
+  recentColors.innerHTML = "";
+  let recents = JSON.parse(localStorage.getItem("recent") || "[]");
+  recents.forEach(color => {
+    const div = createColorBox(color);
+    recentColors.appendChild(div);
+  });
 }
 
-.menu-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  font-size: 26px;
-  z-index: 2000;
-  cursor: pointer;
+function filterColors() {
+  const search = document.getElementById("searchInput").value.toLowerCase();
+  const boxes = document.querySelectorAll("#colorsTable .color-box");
+  boxes.forEach(box => {
+    const color = box.style.backgroundColor.toLowerCase();
+    box.style.display = color.includes(search) ? "block" : "none";
+  });
 }
 
-#sidebar {
-  position: fixed;
-  top: 0;
-  left: -240px;
-  width: 220px;
-  height: 100%;
-  background-color: #222;
-  color: #fff;
-  padding: 20px;
-  z-index: 1999;
-  transition: left 0.3s ease;
+function downloadColorImage() {
+  const color = colorPicker.value;
+  const canvas = document.createElement("canvas");
+  canvas.width = 200;
+  canvas.height = 200;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, 200, 200);
+  const link = document.createElement("a");
+  link.download = `color-${color}.png`;
+  link.href = canvas.toDataURL();
+  link.click();
 }
 
-#sidebar.open {
-  left: 0;
-}
+colorPicker.addEventListener("input", () => {
+  hexCode.textContent = colorPicker.value.toUpperCase();
+  saveRecent(colorPicker.value);
+});
 
-#sidebar h2 {
-  margin-top: 0;
-}
-
-#sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-#sidebar li {
-  margin: 15px 0;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-#sidebar li:hover {
-  color: #4EC5F1;
-}
-
-.credits {
-  margin-top: 40px;
-}
-
-.credits a {
-  color: #4EC5F1;
-  text-decoration: none;
-  transition: text-shadow 0.3s;
-}
-
-.credits a:hover {
-  text-shadow: 0 0 5px #4EC5F1;
-}
-
-.dark-mode {
-  background-color: #121212;
-  color: #eee;
-}
-
-.dark-mode .color-box {
-  box-shadow: 0 0 8px rgba(255,255,255,0.1);
-}
-
-.dark-mode #sidebar {
-  background-color: #1d1d1d;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+window.onload = () => {
+  loadColors();
+  showFavorites();
+  showRecents();
+  hexCode.textContent = colorPicker.value.toUpperCase();
+};
