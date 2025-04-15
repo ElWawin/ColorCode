@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Colores Bonitos</title>
+  <meta charset="UTF-8">
+  <title>Selector de Colores HTML</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #fdfdfd, #f0f0f0);
-      color: #333;
-      padding: 20px;
+    * {
+      box-sizing: border-box;
     }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #f7f9fc, #e3e8ef);
+      color: #333;
+    }
+
     h1 {
       text-align: center;
       margin-bottom: 10px;
+      animation: fadeIn 1s ease-out;
     }
+
     #buscador {
       display: block;
       margin: 0 auto 30px auto;
@@ -23,96 +30,126 @@
       font-size: 16px;
       width: 90%;
       max-width: 400px;
-      border: 2px solid #aaa;
+      border: 1px solid #ccc;
       border-radius: 6px;
+      transition: all 0.3s ease;
     }
-    .grid {
+
+    #buscador:focus {
+      border-color: #888;
+      outline: none;
+    }
+
+    .tabla-colores {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
       gap: 20px;
-      animation: fadeIn 1s ease-in-out;
+      animation: slideUp 1s ease;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(-30px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .color-card {
-      background: white;
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .color-box {
+      background: #fff;
       border-radius: 10px;
       padding: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .color-card:hover {
+
+    .color-box:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
-    .preview {
+
+    .color-preview {
+      width: 100%;
       height: 80px;
       border-radius: 6px;
       margin-bottom: 10px;
-      transition: background 0.3s ease;
     }
-    .name {
+
+    .color-name {
       font-weight: bold;
+      margin-bottom: 5px;
     }
-    .code {
+
+    .color-code {
       font-family: monospace;
+      font-size: 14px;
       color: #555;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
     }
   </style>
 </head>
 <body>
 
-  <h1>Tabla de Colores</h1>
-  <input type="text" id="buscador" placeholder="Buscar por nombre o código..." />
-  <div class="grid" id="contenedor"></div>
+  <h1>Selector Profesional de Colores</h1>
+  <input type="text" id="buscador" placeholder="Buscar color por nombre o código...">
+  <div class="tabla-colores" id="tabla"></div>
+
+  <div class="footer">
+    Clic en cualquier color para copiar el código al portapapeles
+  </div>
 
   <script>
     const colores = [
-      { nombre: 'Rojo', codigo: '#FF0000' },
-      { nombre: 'Verde', codigo: '#00FF00' },
-      { nombre: 'Azul', codigo: '#0000FF' },
-      { nombre: 'Amarillo', codigo: '#FFFF00' },
-      { nombre: 'Cian', codigo: '#00FFFF' },
-      { nombre: 'Magenta', codigo: '#FF00FF' },
-      { nombre: 'Gris', codigo: '#808080' },
-      { nombre: 'Naranja', codigo: '#FFA500' },
-      { nombre: 'Violeta', codigo: '#8A2BE2' },
-      { nombre: 'Turquesa', codigo: '#40E0D0' },
-      { nombre: 'Esmeralda', codigo: '#50C878' },
-      { nombre: 'Coral', codigo: '#FF7F50' }
+      { nombre: "Aqua", codigo: "#00FFFF" }, { nombre: "Black", codigo: "#000000" },
+      { nombre: "Blue", codigo: "#0000FF" }, { nombre: "Fuchsia", codigo: "#FF00FF" },
+      { nombre: "Gray", codigo: "#808080" }, { nombre: "Green", codigo: "#008000" },
+      { nombre: "Lime", codigo: "#00FF00" }, { nombre: "Maroon", codigo: "#800000" },
+      { nombre: "Navy", codigo: "#000080" }, { nombre: "Olive", codigo: "#808000" },
+      { nombre: "Orange", codigo: "#FFA500" }, { nombre: "Purple", codigo: "#800080" },
+      { nombre: "Red", codigo: "#FF0000" }, { nombre: "Silver", codigo: "#C0C0C0" },
+      { nombre: "Teal", codigo: "#008080" }, { nombre: "White", codigo: "#FFFFFF" },
+      { nombre: "Yellow", codigo: "#FFFF00" }, { nombre: "Crimson", codigo: "#DC143C" },
+      { nombre: "Gold", codigo: "#FFD700" }, { nombre: "Indigo", codigo: "#4B0082" },
+      { nombre: "Turquoise", codigo: "#40E0D0" }, { nombre: "Salmon", codigo: "#FA8072" },
+      { nombre: "Plum", codigo: "#DDA0DD" }, { nombre: "Khaki", codigo: "#F0E68C" },
+      { nombre: "SkyBlue", codigo: "#87CEEB" }, { nombre: "Tomato", codigo: "#FF6347" },
     ];
 
-    const contenedor = document.getElementById("contenedor");
-    const buscador = document.getElementById("buscador");
+    const tabla = document.getElementById('tabla');
+    const buscador = document.getElementById('buscador');
 
-    function mostrarColores(filtro = "") {
-      contenedor.innerHTML = "";
-      colores
-        .filter(c =>
-          c.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
-          c.codigo.toLowerCase().includes(filtro.toLowerCase())
-        )
-        .forEach(c => {
-          const div = document.createElement("div");
-          div.className = "color-card";
-          div.innerHTML = `
-            <div class="preview" style="background: ${c.codigo}"></div>
-            <div class="name">${c.nombre}</div>
-            <div class="code">${c.codigo}</div>
-          `;
-          div.onclick = () => {
-            navigator.clipboard.writeText(c.codigo);
-            alert(`Copiado: ${c.codigo}`);
-          };
-          contenedor.appendChild(div);
-        });
+    function mostrarColores(filtro = '') {
+      tabla.innerHTML = '';
+      colores.filter(c =>
+        c.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
+        c.codigo.toLowerCase().includes(filtro.toLowerCase())
+      ).forEach(color => {
+        const div = document.createElement('div');
+        div.className = 'color-box';
+        div.innerHTML = `
+          <div class="color-preview" style="background:${color.codigo}"></div>
+          <div class="color-name">${color.nombre}</div>
+          <div class="color-code">${color.codigo}</div>
+        `;
+        div.onclick = () => {
+          navigator.clipboard.writeText(color.codigo);
+          alert(`¡Copiado: ${color.codigo}!`);
+        };
+        tabla.appendChild(div);
+      });
     }
 
-    buscador.addEventListener("input", () => mostrarColores(buscador.value));
+    buscador.addEventListener('input', () => mostrarColores(buscador.value));
     mostrarColores();
   </script>
 </body>
