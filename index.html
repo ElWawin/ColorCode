@@ -1,51 +1,42 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Explorador de Colores - Wawin</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colores y Códigos</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-
-  <aside id="sidebar">
-    <h2>Menú</h2>
-    <ul>
-      <li onclick="copyColor()">Copiar Color</li>
-      <li onclick="exportFavorites()">Exportar Favoritos</li>
-      <li onclick="downloadColorImage()">Descargar Imagen</li>
-      <li onclick="toggleDarkMode()">Modo Oscuro</li>
-    </ul>
-    <div class="credits">
-      <p>Créditos:</p>
-      <a href="https://instagram.com/el_wawin_" target="_blank">@el_wawin_</a>
+    <div class="menu">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <div id="menu-content" class="menu-content">
+            <ul>
+                <li><button onclick="toggleDarkMode()">Modo Oscuro</button></li>
+                <li><button onclick="changeBackgroundColor()">Cambiar Fondo</button></li>
+                <li><a href="https://www.instagram.com/el_wawin_" target="_blank">Créditos: @el_wawin_</a></li>
+            </ul>
+        </div>
     </div>
-  </aside>
 
-  <main>
-    <h1>Colores Pro</h1>
-    <input type="color" id="colorPicker" />
-    <span id="hexCode">#ffffff</span>
-    <button onclick="addFavorite()">⭐ Favorito</button>
-    <input type="text" id="searchInput" placeholder="Buscar color..." oninput="filterColors()" />
-    
-    <section>
-      <h2>Tabla de Colores</h2>
-      <div id="colorsTable" class="grid"></div>
-    </section>
+    <h1>Selecciona un Color</h1>
 
-    <section>
-      <h2>Favoritos</h2>
-      <div id="favorites" class="grid"></div>
-    </section>
+    <div class="color-table">
+        <!-- Tabla de Colores -->
+        <div class="color-box" style="background-color: #FF5733;" onclick="setColorCode('#FF5733')"></div>
+        <div class="color-box" style="background-color: #33FF57;" onclick="setColorCode('#33FF57')"></div>
+        <div class="color-box" style="background-color: #3357FF;" onclick="setColorCode('#3357FF')"></div>
+        <div class="color-box" style="background-color: #F1C40F;" onclick="setColorCode('#F1C40F')"></div>
+        <div class="color-box" style="background-color: #9B59B6;" onclick="setColorCode('#9B59B6')"></div>
+        <div class="color-box" style="background-color: #E74C3C;" onclick="setColorCode('#E74C3C')"></div>
+        <div class="color-box" style="background-color: #2ECC71;" onclick="setColorCode('#2ECC71')"></div>
+        <div class="color-box" style="background-color: #3498DB;" onclick="setColorCode('#3498DB')"></div>
+    </div>
 
-    <section>
-      <h2>Recientes</h2>
-      <div id="recentColors" class="grid"></div>
-    </section>
-  </main>
+    <div class="color-info">
+        <p>Color Seleccionado: <span id="color-code">#FFFFFF</span></p>
+        <button id="copy-color" onclick="copyColorCode()">Copiar Código</button>
+    </div>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
