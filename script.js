@@ -1,95 +1,147 @@
-const colorPicker = document.getElementById("colorPicker");
-const hexCode = document.getElementById("hexCode");
-const colorsTable = document.getElementById("colorsTable");
-const favoritesContainer = document.getElementById("favorites");
-
-const baseColors = [
-  "#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF",
-  "#00FFFF", "#FFFFFF", "#000000", "#808080", "#800000",
-  "#FFA500", "#A52A2A", "#800080", "#008080", "#008000",
-  "#ADD8E6", "#90EE90", "#D3D3D3", "#FFC0CB", "#FFD700"
-];
-
-function loadColors() {
-  colorsTable.innerHTML = "";
-  baseColors.forEach(color => {
-    const div = document.createElement("div");
-    div.className = "color-box";
-    div.style.background = color;
-    div.onclick = () => {
-      colorPicker.value = color;
-      hexCode.textContent = color.toUpperCase();
-    };
-    colorsTable.appendChild(div);
-  });
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff;
+  color: #333;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
-function copyColor() {
-  navigator.clipboard.writeText(colorPicker.value);
-  alert("¡Color copiado!");
+main {
+  margin-left: 240px;
+  padding: 20px;
 }
 
-function addFavorite() {
-  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  if (!favs.includes(colorPicker.value)) {
-    favs.push(colorPicker.value);
-    localStorage.setItem("favorites", JSON.stringify(favs));
-    renderFavorites();
-  }
+h1, h2 {
+  text-align: center;
 }
 
-function renderFavorites() {
-  favoritesContainer.innerHTML = "";
-  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  favs.forEach(color => {
-    const div = document.createElement("div");
-    div.className = "color-box";
-    div.style.background = color;
-    div.onclick = () => {
-      colorPicker.value = color;
-      hexCode.textContent = color.toUpperCase();
-    };
-    favoritesContainer.appendChild(div);
-  });
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  animation: fadeIn 0.5s ease;
 }
 
-function exportFavorites() {
-  let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  const blob = new Blob([favs.join("\n")], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.download = "favoritos.txt";
-  link.href = URL.createObjectURL(blob);
-  link.click();
+.color-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
 }
 
-function toggleDarkMode() {
-  document.body.classList.toggle("dark-mode");
+.color-box:hover {
+  transform: scale(1.1);
 }
 
-function toggleCredits() {
-  const panel = document.getElementById("credits");
-  if (panel.style.left === "0px") {
-    panel.style.left = "-250px";
-  } else {
-    panel.style.left = "0px";
-  }
+input[type="color"] {
+  height: 40px;
+  border: none;
+  margin: 10px;
 }
 
-function filterColors() {
-  const search = document.getElementById("searchInput").value.toLowerCase();
-  const boxes = document.querySelectorAll(".colors-table .color-box");
-  boxes.forEach(box => {
-    const color = box.style.background.toLowerCase();
-    box.style.display = color.includes(search) ? "inline-block" : "none";
-  });
+button {
+  padding: 8px 12px;
+  margin: 10px;
+  border: none;
+  background-color: #333;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
-colorPicker.addEventListener("input", () => {
-  hexCode.textContent = colorPicker.value.toUpperCase();
-});
+button:hover {
+  background-color: #555;
+}
 
-window.onload = () => {
-  loadColors();
-  renderFavorites();
-  hexCode.textContent = colorPicker.value.toUpperCase();
-};
+#hexCode {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+input[type="text"] {
+  padding: 5px 10px;
+  width: 200px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.menu-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 26px;
+  z-index: 2000;
+  cursor: pointer;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: -240px;
+  width: 220px;
+  height: 100%;
+  background-color: #222;
+  color: #fff;
+  padding: 20px;
+  z-index: 1999;
+  transition: left 0.3s ease;
+}
+
+#sidebar.open {
+  left: 0;
+}
+
+#sidebar h2 {
+  margin-top: 0;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+#sidebar li {
+  margin: 15px 0;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#sidebar li:hover {
+  color: #4EC5F1;
+}
+
+.credits {
+  margin-top: 40px;
+}
+
+.credits a {
+  color: #4EC5F1;
+  text-decoration: none;
+  transition: text-shadow 0.3s;
+}
+
+.credits a:hover {
+  text-shadow: 0 0 5px #4EC5F1;
+}
+
+.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+.dark-mode .color-box {
+  box-shadow: 0 0 8px rgba(255,255,255,0.1);
+}
+
+.dark-mode #sidebar {
+  background-color: #1d1d1d;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
