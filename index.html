@@ -2,197 +2,37 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selector de Colores Profesional</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #f7f9fc, #e4ecf3);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fadeInBody 1.2s ease;
-    }
-
-    @keyframes fadeInBody {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    h1 {
-      margin-top: 30px;
-      font-size: 32px;
-      animation: slideDown 1s ease-out;
-    }
-
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .contenedor {
-      width: 95%;
-      max-width: 800px;
-      margin-top: 20px;
-      padding: 20px;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      animation: fadeIn 1s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .selector {
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    input[type="color"] {
-      width: 80px;
-      height: 80px;
-      border: none;
-      outline: none;
-      border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-
-    input[type="color"]:hover {
-      transform: scale(1.1);
-    }
-
-    .color-elegido {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 18px;
-      background: #f0f0f0;
-      padding: 12px;
-      border-radius: 8px;
-      transition: background 0.3s ease;
-    }
-
-    .tabla-colores {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 15px;
-      margin-top: 30px;
-      animation: fadeInTabla 1s ease;
-    }
-
-    @keyframes fadeInTabla {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .color-box {
-      background: #fff;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .color-box:hover {
-      transform: scale(1.07);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-    }
-
-    .preview {
-      width: 100%;
-      height: 60px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-
-    .nombre {
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .codigo {
-      font-family: monospace;
-      font-size: 13px;
-      color: #666;
-    }
-
-    footer {
-      margin: 40px auto 20px;
-      font-size: 14px;
-      color: #888;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Colores Pro - Wawin</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="menu-icon" onclick="toggleCredits()">☰</div>
 
-  <h1>Selector de Colores</h1>
-
-  <div class="contenedor">
-    <div class="selector">
-      <input type="color" id="colorPicker">
-    </div>
-    <div class="color-elegido">
-      Color seleccionado: <span id="codigoColor">#000000</span>  
-    </div>
-
-    <div class="tabla-colores" id="tablaColores"></div>
+  <div id="credits" class="credits-panel">
+    <p>Créditos:</p>
+    <a href="https://instagram.com/el_wawin_" target="_blank">@el_wawin_</a>
   </div>
 
-  <footer>
-    Clic en un color para copiar su código
-  </footer>
+  <header>
+    <h1>Explorador de Colores</h1>
+    <input type="color" id="colorPicker" />
+    <span id="hexCode">#ffffff</span>
+    <button onclick="copyColor()">Copiar</button>
+    <button onclick="addFavorite()">⭐ Favorito</button>
+    <button onclick="exportFavorites()">Exportar Favoritos</button>
+    <input type="text" id="searchInput" placeholder="Buscar color..." oninput="filterColors()" />
+    <label class="switch">
+      <input type="checkbox" onchange="toggleDarkMode()" />
+      <span class="slider"></span>
+    </label>
+  </header>
 
-  <script>
-    const colores = [
-      { nombre: "Negro", codigo: "#000000" }, { nombre: "Blanco", codigo: "#FFFFFF" },
-      { nombre: "Rojo", codigo: "#FF0000" }, { nombre: "Verde", codigo: "#00FF00" },
-      { nombre: "Azul", codigo: "#0000FF" }, { nombre: "Amarillo", codigo: "#FFFF00" },
-      { nombre: "Cian", codigo: "#00FFFF" }, { nombre: "Magenta", codigo: "#FF00FF" },
-      { nombre: "Naranja", codigo: "#FFA500" }, { nombre: "Violeta", codigo: "#800080" },
-      { nombre: "Gris", codigo: "#808080" }, { nombre: "Marrón", codigo: "#A52A2A" },
-      { nombre: "Turquesa", codigo: "#40E0D0" }, { nombre: "Coral", codigo: "#FF7F50" },
-      { nombre: "Esmeralda", codigo: "#50C878" }, { nombre: "Lima", codigo: "#32CD32" },
-      { nombre: "Rosa", codigo: "#FFC0CB" }, { nombre: "Oro", codigo: "#FFD700" },
-      { nombre: "Celeste", codigo: "#87CEEB" }, { nombre: "Chocolate", codigo: "#D2691E" },
-    ];
+  <section id="colorsTable" class="colors-table"></section>
 
-    const tabla = document.getElementById("tablaColores");
-    const picker = document.getElementById("colorPicker");
-    const codigoColor = document.getElementById("codigoColor");
+  <h2>Favoritos</h2>
+  <section id="favorites" class="favorites-table"></section>
 
-    picker.addEventListener("input", () => {
-      const valor = picker.value.toUpperCase();
-      codigoColor.textContent = valor;
-      navigator.clipboard.writeText(valor);
-    });
-
-    colores.forEach(c => {
-      const div = document.createElement("div");
-      div.className = "color-box";
-      div.innerHTML = `
-        <div class="preview" style="background:${c.codigo}"></div>
-        <div class="nombre">${c.nombre}</div>
-        <div class="codigo">${c.codigo}</div>
-      `;
-      div.onclick = () => {
-        navigator.clipboard.writeText(c.codigo);
-        alert(`¡Copiado: ${c.codigo}!`);
-      };
-      tabla.appendChild(div);
-    });
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
