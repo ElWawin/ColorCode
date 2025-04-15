@@ -2,36 +2,49 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Colores Pro - Wawin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explorador de Colores - Wawin</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="menu-icon" onclick="toggleCredits()">☰</div>
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
 
-  <div id="credits" class="credits-panel">
-    <p>Créditos:</p>
-    <a href="https://instagram.com/el_wawin_" target="_blank">@el_wawin_</a>
-  </div>
+  <aside id="sidebar">
+    <h2>Menú</h2>
+    <ul>
+      <li onclick="copyColor()">Copiar Color</li>
+      <li onclick="exportFavorites()">Exportar Favoritos</li>
+      <li onclick="downloadColorImage()">Descargar Imagen</li>
+      <li onclick="toggleDarkMode()">Modo Oscuro</li>
+    </ul>
+    <div class="credits">
+      <p>Créditos:</p>
+      <a href="https://instagram.com/el_wawin_" target="_blank">@el_wawin_</a>
+    </div>
+  </aside>
 
-  <header>
-    <h1>Explorador de Colores</h1>
+  <main>
+    <h1>Colores Pro</h1>
     <input type="color" id="colorPicker" />
     <span id="hexCode">#ffffff</span>
-    <button onclick="copyColor()">Copiar</button>
     <button onclick="addFavorite()">⭐ Favorito</button>
-    <button onclick="exportFavorites()">Exportar Favoritos</button>
     <input type="text" id="searchInput" placeholder="Buscar color..." oninput="filterColors()" />
-    <label class="switch">
-      <input type="checkbox" onchange="toggleDarkMode()" />
-      <span class="slider"></span>
-    </label>
-  </header>
+    
+    <section>
+      <h2>Tabla de Colores</h2>
+      <div id="colorsTable" class="grid"></div>
+    </section>
 
-  <section id="colorsTable" class="colors-table"></section>
+    <section>
+      <h2>Favoritos</h2>
+      <div id="favorites" class="grid"></div>
+    </section>
 
-  <h2>Favoritos</h2>
-  <section id="favorites" class="favorites-table"></section>
+    <section>
+      <h2>Recientes</h2>
+      <div id="recentColors" class="grid"></div>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>
